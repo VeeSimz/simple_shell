@@ -1,6 +1,6 @@
 #include "shell.h"
 
-//id exec(char *token, char **input, char **env);
+void exec(char *token, char **input, char **env);
 
 /*
  * main - start of the program
@@ -38,3 +38,27 @@ int main(int ac, char *av[], char *env[])
 	return (status);
 }
 
+void exec(char *token, char **input, char **env)
+{
+	pid_t id;
+	int status;
+
+	id = fork();
+	if (id == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (id == 0)
+	{
+		if (token != NULL) {
+			execve(token, input, env);
+			perror("hsh");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		waitpid(id, &status, 0);
+	}
+}
