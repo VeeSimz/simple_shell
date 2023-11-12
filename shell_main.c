@@ -1,5 +1,7 @@
 #include "shell.h"
 
+//id exec(char *token, char **input, char **env);
+
 /*
  * main - start of the program
  * @ac: array length
@@ -8,19 +10,31 @@
  *
  */
 
-int main(int ac, char *av[])
+int main(int ac, char *av[], char *env[])
 {
-	char *input = NULL;
+	char *cmd[20], *token;
+	int status = 0;
+	char *buf = NULL;
 	size_t size = 0;
-	(void)ac;
-	(void)av;
 
-	printf("$ ");
-	while (getline(&input, &size, stdin) != EOF)
+	while (getline(&buf, &size, stdin) != EOF)
 	{
-		write(1, "$ ", 2);
-	}
-	free(input);
-	exit(0);
+		if (isatty(STDIN_FILENO))
+			write(1,"$ ", 2);
+		fflush(stdout);
+		token = strtok(buf, " \t\n");
+		int i = 0;
 
+		while (/*token != NULL &&*/ i < 19)
+		{
+			cmd[i] = token;
+			i++;
+			token = strtok(NULL, " \t\n");
+		}
+		cmd[i] = NULL;
+		exec(cmd[0], cmd, env);
+	}
+	free(buf);
+	return (status);
 }
+
