@@ -6,5 +6,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <string.h>
+
+void exec(char *token, char **input, char **env);
 
 #endif
