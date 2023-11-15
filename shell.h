@@ -10,5 +10,6 @@
 #include <stddef.h>
 
 void exec(char *token, char **input, char **env);
+int myExit(char **cmd);
 
 #endif
