@@ -35,7 +35,12 @@ int main(int argc, char **argv, char **env)
 			token = strtok(NULL, " \t\n");
 		}
 		cmd[i] = NULL;
-		exec(cmd[0], cmd, env);
+		if (cmd[0] != NULL && myExit(cmd) != 0)
+			break;
+		if (cmd[0] != NULL)
+		{
+			exec(cmd[0], cmd, env);
+		}
 	}
 	free(buf);
 	return (status);
@@ -66,7 +71,7 @@ void exec(char *token, char **input, char **env)
 		if (token != NULL)
 		{
 			execve(token, input, env);
-			perror("hsh");
+			perror(token);
 			exit(EXIT_FAILURE);
 		}
 	}
