@@ -11,5 +11,6 @@
 
 void exec(char *token, char **input, char **env);
 int myExit(char **cmd);
+char *_strtok(char *input, char *delimiter);
 
 #endif
