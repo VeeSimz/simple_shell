@@ -2,28 +2,31 @@
 
 void exec(char *token, char **input, char **env);
 
-/*
- * main - start of the program
- * @ac: array length
- * @av: arguments in the array
- * Return: 0 success
+/**
+ * main - start of simple shell program
+ * @argc: array length
+ * @argv: arguments in the array
+ * @env: enviroment variable
  *
+ * Return: 0 on success
  */
 
-int main(int ac, char *av[], char *env[])
+int main(int argc, char **argv, char **env)
 {
 	char *cmd[20], *token;
-	int status = 0;
+	int i, status = 0;
 	char *buf = NULL;
 	size_t size = 0;
+	(void)argv;
+	(void)argc;
 
 	while (getline(&buf, &size, stdin) != EOF)
 	{
 		if (isatty(STDIN_FILENO))
-			write(1,"$ ", 2);
+			write(1, "$ ", 2);
 		fflush(stdout);
 		token = strtok(buf, " \t\n");
-		int i = 0;
+		i = 0;
 
 		while (/*token != NULL &&*/ i < 19)
 		{
@@ -38,6 +41,15 @@ int main(int ac, char *av[], char *env[])
 	return (status);
 }
 
+/**
+ * exec - executes the input commands
+ * @token: tokenised string input
+ * @input: string input
+ * @env: environment
+ *
+ * Return: void
+ */
+
 void exec(char *token, char **input, char **env)
 {
 	pid_t id;
@@ -51,7 +63,8 @@ void exec(char *token, char **input, char **env)
 	}
 	else if (id == 0)
 	{
-		if (token != NULL) {
+		if (token != NULL)
+		{
 			execve(token, input, env);
 			perror("hsh");
 			exit(EXIT_FAILURE);
